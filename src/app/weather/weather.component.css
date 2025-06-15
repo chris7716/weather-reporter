@@ -1,0 +1,118 @@
+/* Container Layout */
+.container {
+  font-family: 'Segoe UI', sans-serif;
+  background: #e0f7fa;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* Autocomplete Search Input */
+.autocomplete {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.autocomplete input {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Suggestions Dropdown */
+.autocomplete ul {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete li {
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.autocomplete li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Search Button */
+button {
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Weather Card */
+.card {
+  background: white;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Weather Main Display */
+.weather-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.weather-main img {
+  width: 64px;
+  height: 64px;
+}
+
+/* Weather Info Rows */
+.weather-info {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.weather-info p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Footer */
+footer {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: #777;
+}
