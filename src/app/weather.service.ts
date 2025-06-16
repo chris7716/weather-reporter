@@ -6,8 +6,7 @@ import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
-  // private apiKey = '6867153f0eb4452fada103517251506'; // replace with your actual key
-  private apiKey = environment.weatherApiKey;
+  private apiKey = environment.weatherApiKey!;
   private baseUrl = 'https://api.weatherapi.com/v1';
 
   constructor(private http: HttpClient) {}
@@ -22,5 +21,10 @@ export class WeatherService {
     return this.http.get<any[]>(
       `${this.baseUrl}/search.json?key=${this.apiKey}&q=${query}`
     );
+  }
+
+  getForecast(city: string): Observable<any> {
+    const url = `${this.baseUrl}/forecast.json?key=${this.apiKey}&q=${city}&days=3&aqi=no&alerts=no`;
+    return this.http.get<any>(url);
   }
 }
