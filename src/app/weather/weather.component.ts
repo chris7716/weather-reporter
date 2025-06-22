@@ -1,63 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { WeatherService } from '../weather.service';
 import { CommonModule } from '@angular/common';
+import { SearchHeaderComponent } from '../search-header/search-header.component';
+import { ForecastRowComponent } from '../forecast-row/forecast-row.component';
 
 @Component({
   selector: 'app-weather',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    SearchHeaderComponent,
+    ForecastRowComponent
+  ],
   templateUrl: './weather.component.html',
-  styleUrls: ['./weather.component.css']
+  styleUrls: ['./weather.component.css'],
 })
 export class WeatherComponent implements OnInit {
-  city = 'Colombo';
-  searchControl = new FormControl('');
-  suggestions: string[] = [];
   weatherData: any;
+  forecastDays: any[] = [];
+  city: string = 'Colombo';
   loading = false;
   error = '';
 
   constructor(private weatherService: WeatherService) {}
 
-  ngOnInit() {
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((value) => {
-        if (value && value.length >= 3) {
-          this.fetchSuggestions(value);
-        } else {
-          this.suggestions = [];
-        }
-      });
-    this.fetchWeather();
+  ngOnInit(): void {
+    this.fetchWeather(this.city);
   }
 
-  fetchSuggestions(query: string) {
-    this.weatherService.getCitySuggestions(query).subscribe({
-      next: (data) => {
-        this.suggestions = data.map((loc) => loc.name);
-      },
-      error: () => {
-        this.suggestions = [];
-      }
-    });
+  fetchSuggestions(city: string): void {
+    this.city = city;
+    this.fetchWeather(city);
   }
 
-  fetchWeather(selectedCity?: string) {
+  fetchWeather(cityQuery: string): void {
     this.loading = true;
     this.error = '';
-    this.city = selectedCity || this.searchControl.value || 'Colombo';
-    this.weatherService.getWeather(this.city).subscribe({
+    this.weatherData = null;
+    this.forecastDays = [];
+
+    this.weatherService.getForecast(cityQuery).subscribe({
       next: (data) => {
-        this.weatherData = data;
+        this.weatherData = data.current;
+        this.forecastDays = data.forecast.forecastday;
+        this.city = data.location.name;
         this.loading = false;
-        this.suggestions = [];
       },
-      error: () => {
-        this.error = 'Failed to fetch weather data.';
+      error: (err) => {
+        console.error('Error fetching weather:', err);
+        this.error = 'Failed to load weather data.';
         this.loading = false;
-      }
+      },
     });
   }
 }
