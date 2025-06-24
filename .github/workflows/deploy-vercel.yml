@@ -1,0 +1,69 @@
+name: Test and Deploy to Vercel
+
+on:
+  push:             # Trigger on any branch push
+    branches:
+      - '**'        # Match all branches
+
+jobs:
+  test:
+    name: Run Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Inject weatherApiKey
+        run: |
+          echo "export const environment = {" > src/environments/environment.ts
+          echo "  production: true," >> src/environments/environment.ts
+          echo "  weatherApiKey: '${{ secrets.WEATHER_API_KEY }}'" >> src/environments/environment.ts
+          echo "};" >> src/environments/environment.ts
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Run Unit Tests
+        run: npm run test
+        env:
+          CHROME_BIN: chrome
+
+  deploy:
+    name: Deploy to Vercel
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Inject weatherApiKey
+        run: |
+          echo "export const environment = {" > src/environments/environment.ts
+          echo "  production: true," >> src/environments/environment.ts
+          echo "  weatherApiKey: '${{ secrets.WEATHER_API_KEY }}'" >> src/environments/environment.ts
+          echo "};" >> src/environments/environment.ts
+
+      - name: Build Angular App
+        run: npm run build
+
+      - name: Deploy to Vercel
+        run: npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
