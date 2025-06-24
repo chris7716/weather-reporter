@@ -28,13 +28,13 @@ jobs:
           echo "  weatherApiKey: '${{ secrets.WEATHER_API_KEY }}'" >> src/environments/environment.ts
           echo "};" >> src/environments/environment.ts
 
-      - name: Install Chrome for Headless Testing
+      - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Run Tests
+      - name: Run Unit Tests
         run: npm run test -- --browsers=ChromeHeadless --watch=false
         env:
-          CHROME_BIN: chrome
+          CHROME_BIN: chromium-browser
 
   deploy:
     name: Deploy to Vercel
