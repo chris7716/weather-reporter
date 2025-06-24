@@ -32,9 +32,9 @@ jobs:
         uses: browser-actions/setup-chrome@v1
 
       - name: Run Unit Tests
-        run: npm run test -- --browsers=ChromeHeadless --watch=false
+        run: npm run test
         env:
-          CHROME_BIN: chromium-browser
+          CHROME_BIN: chrome
 
   deploy:
     name: Deploy to Vercel
