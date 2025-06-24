@@ -8,3 +8,4 @@ dist/
 *.log
 .angular
 .prettierrc
+src/environments/environment.ts
